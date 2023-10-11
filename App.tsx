@@ -18,7 +18,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <LoadingAsync />
+      {/* <LoadingAsync /> */}
+      <LoadingAsyncWithAsset />
     </View>
   );
 }

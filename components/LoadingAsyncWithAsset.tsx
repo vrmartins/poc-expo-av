@@ -49,6 +49,7 @@ export default function LoadingAsyncWithAsset() {
           setReadyForDisplay(true);
           // videoRef.current.playAsync();
         }}
+        usePoster
         posterSource={{
           uri: "https://image.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco/thumbnail.png?time=5",
         }}

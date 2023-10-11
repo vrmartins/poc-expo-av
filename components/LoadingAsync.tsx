@@ -46,7 +46,7 @@ export default function LoadingAsync() {
           setReadyForDisplay(true);
         }}
         // useNativeControls
-        resizeMode={ResizeMode.CONTAIN}
+        // resizeMode={ResizeMode.CONTAIN}
         isLooping
         onPlaybackStatusUpdate={(status: AVPlaybackStatus) =>
           setStatus(() => status)
