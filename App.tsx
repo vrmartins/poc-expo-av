@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Button, Text } from "react-native";
 import { Video, ResizeMode, AVPlaybackStatus } from "expo-av";
+import LoadingAsync from "./components/LoadingAsync";
 
 /**
  * Is it possible to manipulate the URI to select the audio and text tracks?
@@ -18,7 +19,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Video
+      <LoadingAsync />
+      {/* <Video
         ref={video}
         style={styles.video}
         source={{
@@ -55,7 +57,7 @@ export default function App() {
               : video.current.playAsync()
           }
         />
-      </View>
+      </View> */}
     </View>
   );
 }
