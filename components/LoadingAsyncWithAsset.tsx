@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { AVPlaybackSource, AVPlaybackStatus, Video } from "expo-av";
+import { AVPlaybackSource, AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Asset } from "expo-asset";
 
 export default function LoadingAsyncWithAsset() {
-  const videoUri =
-    "https://stream.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco.m3u8";
   // const videoUri =
-  //   "https://videos.ctfassets.net/1sa3dimwvx6n/70qMNJlQVgEF7DhnZlVWG4/9de138d1cc16fb6be841357533e38bc5/cv-hip-flexor-stretch-sideways-right-preview-video.mp4";
+  //   "https://stream.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco.m3u8";
+  const videoUri =
+    "https://videos.ctfassets.net/1sa3dimwvx6n/6zwecnHLsNdpKJcGtWA3H/adfd858c402d7d2da685a4407ee64e42/flying-woodpecker-claire-preview-2-loops.mp4";
   const [readyForDisplay, setReadyForDisplay] = useState(false);
+  const [status, setStatus] = React.useState<AVPlaybackStatus>({
+    isPlaying: false,
+  } as AVPlaybackStatus);
   const video = new Video({});
   const videoRef: React.MutableRefObject<Video> = React.useRef(video);
   const source: AVPlaybackSource = { uri: videoUri };
@@ -41,14 +44,17 @@ export default function LoadingAsyncWithAsset() {
           console.log("🚀 onLoad", data);
           // videoRef.current.playAsync();
         }}
+        resizeMode={ResizeMode.CONTAIN}
         onPlaybackStatusUpdate={(status: AVPlaybackStatus) => {
           console.log("onPlaybackStatusUpdate", status);
+          setStatus(() => status);
         }}
         onReadyForDisplay={(data) => {
           console.log("🚀 onReadyForDisplay", data);
           setReadyForDisplay(true);
           // videoRef.current.playAsync();
         }}
+        isLooping
         usePoster
         posterSource={{
           uri: "https://image.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco/thumbnail.png?time=5",
@@ -56,8 +62,15 @@ export default function LoadingAsyncWithAsset() {
       />
       <View style={styles.buttons}>
         {!readyForDisplay && <Button onPress={loadVideo} title="Load video" />}
-        {readyForDisplay && (
-          <Button onPress={() => videoRef.current.playAsync()} title="Play" />
+        {readyForDisplay && status.isLoaded && (
+          <Button
+            title={status.isPlaying ? "Pause" : "Play"}
+            onPress={() =>
+              status.isPlaying
+                ? videoRef.current.pauseAsync()
+                : videoRef.current.playAsync()
+            }
+          />
         )}
       </View>
     </View>
