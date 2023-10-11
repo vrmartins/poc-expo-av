@@ -6,7 +6,8 @@ export default function LoadingAsync() {
   const videoUri =
     "https://stream.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco.m3u8";
   const [readyForDisplay, setReadyForDisplay] = useState(false);
-  const videoRef: React.MutableRefObject<Video | null> = React.useRef(null);
+  const video = new Video({});
+  const videoRef: React.MutableRefObject<Video> = React.useRef(video);
   const source = { uri: videoUri };
 
   // useEffect(() => {
@@ -15,11 +16,7 @@ export default function LoadingAsync() {
 
   const loadVideo = async () => {
     // const { sound } = await Video.loadAsync({ uri: videoUri }, {}, false);
-    const avPlaybackStatus = await videoRef.current?.loadAsync(
-      source,
-      {},
-      true
-    );
+    const avPlaybackStatus = await videoRef.current.loadAsync(source, {}, true);
 
     console.log("avPlaybackStatus ===>", avPlaybackStatus);
   };
@@ -31,7 +28,7 @@ export default function LoadingAsync() {
         style={styles.video}
         onLoad={(data) => {
           console.log("🚀 onLoad", data);
-          // videoRef.current?.playAsync();
+          // videoRef.current.playAsync();
         }}
         onPlaybackStatusUpdate={(status: AVPlaybackStatus) => {
           console.log("onPlaybackStatusUpdate", status);
@@ -39,7 +36,7 @@ export default function LoadingAsync() {
         onReadyForDisplay={(data) => {
           console.log("🚀 onReadyForDisplay", data);
           setReadyForDisplay(true);
-          // videoRef.current?.playAsync();
+          // videoRef.current.playAsync();
         }}
         posterSource={{
           uri: "https://image.mux.com/KfaKKN1rwKfW5SHYjlBLd5Qgvl102qf2YW9haG9MhAco/thumbnail.png?time=5",
@@ -48,7 +45,7 @@ export default function LoadingAsync() {
       <View style={styles.buttons}>
         {!readyForDisplay && <Button onPress={loadVideo} title="Load video" />}
         {readyForDisplay && (
-          <Button onPress={() => videoRef.current?.playAsync()} title="Play" />
+          <Button onPress={() => videoRef.current.playAsync()} title="Play" />
         )}
       </View>
     </View>
